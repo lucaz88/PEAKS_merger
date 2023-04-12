@@ -1,4 +1,4 @@
-# R function to merge CSV outputs of PEAKS Studio
+# Merge CSV outputs of PEAKS Studio
 
 ## Required inputs:
 * ***raw_dir***: path to a folder containing multiple CSV files. Note that the name of each file in the folder will be used (extension excluded) as sample identifier to name the columns in the merged table.
