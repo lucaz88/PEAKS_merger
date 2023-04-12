@@ -2,11 +2,11 @@
 
 
 
-#___ dummy data for testing
-setwd("Seafile/CF-BINF/PROJECTs/inter_CFs/CF_MS-merger/")
-raw_dir <- "toy_data3"
-out_file <- "merged_toy3_tab.csv"
-#___ for testing
+# #___ dummy data for testing
+# setwd("Seafile/CF-BINF/PROJECTs/inter_CFs/CF_MS-PEAKS_merger/")
+# raw_dir <- "toy_data3"
+# out_file <- "merged_toy3_tab.csv"
+# #___ for testing
 
 
 
@@ -33,7 +33,7 @@ csv_merger <- function(raw_dir, out_file) {
   
   ##! read-in raw data
   tab_list <- list.files(path = raw_dir, pattern = ".csv$", full.names = T)
-  smpl_names <- gsub("sample_|proteins_Output_|.csv", "", tab_list)
+  smpl_names <- gsub("sample_|proteins_Output_|.csv", "", basename(tab_list))
   col_names <- c("Protein.Group","Protein.ID","Accession","neg10lgP",
                  "Coverage","Coverage.Sample","Area.Sample","X.Peptides",
                  "X.Unique","X.Spec.Sample","PTM","Avg.Mass",
@@ -52,10 +52,11 @@ csv_merger <- function(raw_dir, out_file) {
   ##! merge tables
   merged_tabs <- tabs %>% 
     reduce(right_join, by = col_names[c(3,12,13)]) %>% 
-    arrange(Accession)
-  
+    arrange(Accession) %>%
+    mutate(across(everything(), ~replace(.x, .x == "", "no_PTM_detected")))
+
   ##! save merged table
-  dir.create(dirname(out_file), recursive = T)
+  dir.create(dirname(out_file), recursive = T, showWarnings = F)
   write.table(merged_tabs, out_file, quote = F, sep = ",",
               col.names = T, row.names = F)
 }
