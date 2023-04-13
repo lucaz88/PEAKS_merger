@@ -3,7 +3,7 @@
 
 
 # #___ dummy data for testing
-# setwd("Seafile/CF-BINF/PROJECTs/inter_CFs/CF_MS-PEAKS_merger/")
+# setwd("/media/lucaz/DATA/Seafile/CF-BINF/PROJECTs/inter_CFs/CF_MS-PEAKS_merger/")
 # raw_dir <- "toy_data3"
 # out_file <- "merged_toy3_tab.csv"
 # #___ for testing
@@ -51,7 +51,7 @@ csv_merger <- function(raw_dir, out_file) {
   
   ##! merge tables
   merged_tabs <- tabs %>% 
-    reduce(right_join, by = col_names[c(3,12,13)]) %>% 
+    reduce(full_join, by = col_names[c(3,12,13)]) %>% 
     arrange(Accession) %>%
     mutate(across(everything(), ~replace(.x, .x == "", "no_PTM_detected")))
 
